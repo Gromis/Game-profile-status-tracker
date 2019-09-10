@@ -1,0 +1,346 @@
+# File name: main.kv
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+<LabelStats@Label>:	
+	font_name: 'HELR65W'
+	font_size: 24
+	text_size: self.size
+	markup: True
+	halign: 'left'
+	valign: 'middle'	
+	bold: True
+<LabelHeader1@Label>:
+	font_name: 'HELR65W'
+	halign: 'left'
+	valign: 'middle'
+	font_size: 20
+	text_size: 700,None
+
+<CustomButton@Button>:
+	font_name: 'HELR65W'
+	font_size: 24
+	background_normal: 'button.png'
+	background_down: 'button_pressed.png'
+
+<CustomTextInput@TextInput>:
+	font_name: 'HELR65W'
+	background_active: 'input_active.png'
+	background_normal: 'input_un_active.png'
+	background_disabled_normal: 'input_disabled.png'
+	multiline: False
+
+ScreenManagement:
+	transition: SlideTransition()
+
+	main_screen: main_screen
+	fortnite_screen: fortnite_screen
+	csgo_screen: csgo_screen
+	pubg_screen: pubg_screen
+
+	MainScreen:
+		id: main_screen
+	FortniteScreen:
+		id: fortnite_screen
+	CsgoScreen:
+		id: csgo_screen
+	PubgScreen:
+		id: pubg_screen
+
+<MainScreen>:
+	name: "main"
+	Image:
+		allow_stretch: True
+		source: 'background.png'
+		keep_ratio: False	
+	AnchorLayout:
+		AnchorLayout:
+			anchor_x: 'center'
+			anchor_y: 'top'
+			BoxLayout:
+				orientation: 'vertical'
+				padding: 2,5,2,0
+				GridLayout:
+					id: _game_select
+					size_hint: 1,None
+					height: 200
+					rows: 2
+					BoxLayout:
+						orientation: 'horizontal'
+						spacing: 4
+						ToggleButton:
+							id: _pubg_button
+							pubg_button: _pubg_button
+							group: 'GameSelect'
+							background_normal: 'pubg.png' 
+							background_down: 'pubg_selected.png'
+							on_state: root.pubg_selected(*args)
+
+						ToggleButton:
+							id: _fortnite_button
+							fortnite_button: _fortnite_button
+							group: 'GameSelect'
+							background_normal: 'fortnite.png'
+							background_down: 'fortnite_selected.png'
+							on_state: root.fortnite_selected(*args)
+
+						ToggleButton:
+							id: _csgo_button
+							csgo_button: _csgo_button
+							group: 'GameSelect'
+							background_normal: 'csgo.png'
+							background_down: 'csgo_selected.png' 
+							on_state: root.csgo_selected(*args)
+
+					BoxLayout:
+						orientation: 'horizontal'
+						search: _text_input
+						size_hint: 0.5,0.5
+						padding: 2,25,4,0
+						CustomTextInput:
+							id: _text_input
+						CustomButton:
+							text: 'Search'
+							on_release:
+								root.manager.transition.direction = "left"
+								if _fortnite_button.state == 'down': \
+								root.manager.current = "fortnite"; \
+								root.manager.ids.fortnite_screen.player_rating(_text_input.text)
+								if _pubg_button.state == 'down': \
+								root.manager.current = "pubg"; \
+								root.manager.ids.pubg_screen.player_rating(_text_input.text)
+								if _csgo_button.state == 'down': \
+								app.process_button_click()
+				Widget:
+		GridLayout:
+			cols: 1
+			rows: 3
+			size_hint: 0.25,0.25
+			LabelHeader1:
+				halign: 'center'
+				font_size: 42
+				text: "Game Status Tracker"
+			GridLayout:
+				cols: 1
+				rows: 3
+				spacing: 0.4,0.2
+				size_hint: 0.5,0.5
+				LabelHeader1:
+					text: 'This application gives you the opportunity to track your game'
+				LabelHeader1:
+					text: 'status. For those gamers who are looking to increase their skill'
+				LabelHeader1:
+					text: 'every day, you can use this application for tracking your progress.'
+
+<FortniteScreen>:
+	name: "fortnite"
+	Image:
+		allow_stretch: True
+		source: 'background.png'
+		keep_ratio: False
+	AnchorLayout:
+		anchor_y: 'top'
+		anchor_x: 'center'
+		GridLayout:
+			rows: 2
+			BoxLayout:
+				size: 200,200
+				size_hint: 0.35, 0.35
+				anchor_y: 'top'
+				Label:
+					font_name: 'HELR65W'
+					font_size: 72
+					text: "FORTNITE STATS"
+			BoxLayout:
+				orientation: 'horizontal'
+				GridLayout:
+					cols: 3
+					Widget:
+						size_hint: 0.2, None
+					GridLayout:
+						cols: 2
+						rows: 11
+						LabelStats:
+							text: "Rating:"
+						LabelStats:
+							text: str(root.rating_label['trnRating'])
+						LabelStats:
+							text: "Score:"
+						LabelStats:
+							text: str(root.rating_label['score'])
+						LabelStats:
+							text: "Top 1:"
+						LabelStats:
+							text: str(root.rating_label['top1'])
+						LabelStats:
+							text: "Top 10:"
+						LabelStats:
+							text: str(root.rating_label['top10'])
+						LabelStats:
+							text: "Top 25:"
+						LabelStats:
+							text: str(root.rating_label['top25'])
+						LabelStats:
+							text: "K|D Ratio:"
+						LabelStats:
+							text: str(root.rating_label['kd'])
+						LabelStats:
+							text: "Win Ratio:"
+						LabelStats:
+							text: str(root.rating_label['winRatio'])
+						LabelStats:
+							text: "Matches Played:"
+						LabelStats:
+							text: str(root.rating_label['matches'])
+						LabelStats:
+							text: "Total Kills:"
+						LabelStats:
+							text: str(root.rating_label['kills'])
+						LabelStats:
+							text: "Kills Per Match:"
+						LabelStats:
+							text: str(root.rating_label['kpg'])
+						LabelStats:
+							text: "Score Per Match:"
+						LabelStats:
+							text: str(root.rating_label['scorePerMatch'])
+					BoxLayout:
+						orientation: 'horizontal'
+						padding: 2,25,4,0
+						CustomButton:
+							text: "Back"
+							size_hint: 0.4,0.1
+							on_release:
+								app.root.current = "main"
+								root.manager.transition.direction = "right"
+						CustomButton:
+							text: "Show Stats"
+							size_hint: 0.4,0.1
+							on_press:
+								root.get_rating()
+
+<PubgScreen>:
+	name: "pubg"
+	Image:
+		allow_stretch: True
+		source: 'background.png'
+		keep_ratio: False	
+	AnchorLayout:
+		anchor_y: 'top'
+		anchor_x: 'center'
+		GridLayout:
+			rows: 2
+			BoxLayout:
+				size: 200,200
+				size_hint: 0.35, 0.35
+				anchor_y: 'top'
+				Label:
+					font_name: 'HELR65W'
+					font_size: 72
+					text: "PUBG STATS"
+			BoxLayout:
+				orientation: 'horizontal'
+				GridLayout:
+					cols: 3
+					Widget:
+						size_hint: 0.2, None
+					GridLayout:
+						cols: 4
+						rows: 8
+						LabelStats:
+							text: "Kills:"
+						LabelStats:
+							text: str(root.pubg_label['kills'])
+						LabelStats:
+							text: "Headshot Kills:"
+						LabelStats:
+							text: str(root.pubg_label['headshotKills'])
+						LabelStats:
+							text: "Daily Kills:"
+						LabelStats:
+							text: str(root.pubg_label['dailyKills'])
+						LabelStats:
+							text: "Damage Dealt:"
+						LabelStats:
+							text: str(int(root.pubg_label['damageDealt']))
+						LabelStats:
+							text: "Longest Kill:"
+						LabelStats:
+							text: str(int(root.pubg_label['longestKill']))
+						LabelStats:
+							text: "Biggest Kill Streak:"
+						LabelStats:
+							text: str(root.pubg_label['maxKillStreaks'])
+						LabelStats:
+							text: "Road Kills:"
+						LabelStats:
+							text: str(root.pubg_label['roadKills'])
+						LabelStats:
+							text: "Most Kills:"
+						LabelStats:
+							text: str(root.pubg_label['roundMostKills'])
+						LabelStats:
+							text: "Weekly Kills:"
+						LabelStats:
+							text: str(root.pubg_label['weeklyKills'])
+						LabelStats:
+							text: "Wins:"
+						LabelStats:
+							text: str(root.pubg_label['wins'])
+						LabelStats:
+							text: "Weapons Acquired:"
+						LabelStats:
+							text: str(root.pubg_label['weaponsAcquired'])
+						LabelStats:
+							text: "Top 10:"
+						LabelStats:
+							text: str(root.pubg_label['top10s'])
+						LabelStats:
+							text: "Time survived:"
+						LabelStats:
+							text: str(int(root.pubg_label['timeSurvived']))
+						LabelStats:
+							text: "Rounds Played:"
+						LabelStats:
+							text: str(root.pubg_label['roundsPlayed'])
+						LabelStats:
+							text: "Ride Distance:"
+						LabelStats:
+							text: str(int(root.pubg_label['rideDistance']))
+					BoxLayout:
+						size_hint: 0.35,0.35
+						orientation: 'vertical'
+						padding: 2,25,4,0
+						CustomButton:
+							text: "Back"
+							size_hint: None,0.1
+							on_release:
+								app.root.current = "main"
+								root.manager.transition.direction = "right"
+						CustomButton:
+							text: "Refresh"
+							size_hint: None,0.1
+							on_press:
+								root.get_rating()
+						Widget:
+							
+<CsgoScreen>:
+	name: "csgo"
+	Image:
+		allow_stretch: True
+		color: 1,1,1,0.2
+		source: 'bcimage.jpg'
+		keep_ratio: False
+	GridLayout:
+		cols: 6
+		rows: 8
+		Label:
+			text: "Rating"
+		Label:
+			text: "0"
+		CustomButton:
+			font_size: 22
+			text: "Back"
+			size_hint: 1,1
+			on_release:
+				app.root.current = "main"
+				root.manager.transition.direction = "right"
