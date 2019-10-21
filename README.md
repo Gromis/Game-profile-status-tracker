@@ -26,3 +26,5 @@ If you run the main file, two windows will appear.
 - [x] PUBG API - Request|Recieve|Store|Use
 - [x] Fortnite API - Request|Recieve|Store|Use
 - [ ] CSGO API - Request|Recieve|Store|Use
+
+### Project is not being continued
